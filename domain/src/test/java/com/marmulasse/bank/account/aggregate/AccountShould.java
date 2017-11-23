@@ -1,8 +1,5 @@
-package com.marmulasse.bank.account;
+package com.marmulasse.bank.account.aggregate;
 
-import com.marmulasse.bank.account.aggregate.Account;
-import com.marmulasse.bank.account.aggregate.Amount;
-import com.marmulasse.bank.account.aggregate.Balance;
 import com.marmulasse.bank.account.events.NewAccountCreated;
 import com.marmulasse.bank.account.events.NewDepositMade;
 import org.junit.Test;
@@ -40,6 +37,13 @@ public class AccountShould {
     }
 
     @Test
+    public void add_new_account_creation_event_when_account_is_created() throws Exception {
+        Account account = Account.empty();
+
+        assertThat(account.getNewChanges()).containsExactly(new NewAccountCreated(account.getAccountId()));
+    }
+
+    @Test
     public void add_new_deposit_event_when_deposit_is_made() throws Exception {
         Account account = Account.empty();
 
@@ -47,8 +51,15 @@ public class AccountShould {
 
         assertThat(account.getNewChanges())
                 .containsExactly(
-                        new NewAccountCreated(Balance.ZERO),
-                        new NewDepositMade(Amount.of(1.0)));
+                        new NewAccountCreated(account.getAccountId()),
+                        new NewDepositMade(account.getAccountId(), Amount.of(1.0)));
+    }
+
+    @Test
+    public void be_identified_by_an_account_id_when_created() throws Exception {
+        Account account = Account.empty();
+
+        assertThat(account.getAccountId()).isNotNull();
     }
 
     @Test

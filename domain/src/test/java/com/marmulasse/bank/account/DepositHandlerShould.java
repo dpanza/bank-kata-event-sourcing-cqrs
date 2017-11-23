@@ -2,7 +2,6 @@ package com.marmulasse.bank.account;
 
 import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.Amount;
-import com.marmulasse.bank.account.aggregate.Balance;
 import com.marmulasse.bank.account.events.NewAccountCreated;
 import com.marmulasse.bank.account.events.NewDepositMade;
 import com.marmulasse.bank.account.port.AccountRepository;
@@ -35,8 +34,8 @@ public class DepositHandlerShould {
         verify(accountRepositoryMock).save(accountArgumentCaptor.capture());
         Account savedAccount = accountArgumentCaptor.getValue();
         assertThat(savedAccount.getNewChanges()).containsExactly(
-                new NewAccountCreated(Balance.ZERO),
-                new NewDepositMade(Amount.of(10.0)));
+                new NewAccountCreated(savedAccount.getAccountId()),
+                new NewDepositMade(savedAccount.getAccountId(), Amount.of(10.0)));
     }
 
 }

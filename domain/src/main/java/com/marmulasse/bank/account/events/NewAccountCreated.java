@@ -1,17 +1,17 @@
 package com.marmulasse.bank.account.events;
 
-import com.marmulasse.bank.account.aggregate.Balance;
+import com.marmulasse.bank.account.aggregate.AccountId;
 
 public class NewAccountCreated implements AccountEvent {
 
-    private Balance balance;
+    private AccountId accountId;
 
-    public NewAccountCreated(Balance balance) {
-        this.balance = balance;
+    public NewAccountCreated(AccountId accountId) {
+        this.accountId = accountId;
     }
 
-    public Balance getBalance() {
-        return balance;
+    public AccountId getAccountId() {
+        return accountId;
     }
 
     @Override
@@ -21,19 +21,19 @@ public class NewAccountCreated implements AccountEvent {
 
         NewAccountCreated that = (NewAccountCreated) o;
 
-        return balance != null ? balance.equals(that.balance) : that.balance == null;
+        return accountId != null ? accountId.equals(that.accountId) : that.accountId == null;
 
     }
 
     @Override
     public int hashCode() {
-        return balance != null ? balance.hashCode() : 0;
+        return accountId != null ? accountId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "NewAccountCreated{" +
-                "balance=" + balance +
+                "accountId=" + accountId +
                 '}';
     }
 }
