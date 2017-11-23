@@ -1,6 +1,6 @@
 package com.marmulasse.bank.account.events;
 
-import com.marmulasse.bank.account.Amount;
+import com.marmulasse.bank.account.aggregate.Amount;
 
 public class NewDepositMade implements AccountEvent {
     private Amount amount;

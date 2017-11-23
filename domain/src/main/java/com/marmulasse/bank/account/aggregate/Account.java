@@ -1,4 +1,4 @@
-package com.marmulasse.bank.account;
+package com.marmulasse.bank.account.aggregate;
 
 import com.google.common.base.Preconditions;
 import com.marmulasse.bank.account.events.AccountEvent;

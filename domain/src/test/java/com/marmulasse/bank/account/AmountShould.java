@@ -1,5 +1,6 @@
 package com.marmulasse.bank.account;
 
+import com.marmulasse.bank.account.aggregate.Amount;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

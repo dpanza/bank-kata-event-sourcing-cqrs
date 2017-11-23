@@ -1,6 +1,6 @@
 package com.marmulasse.bank.account.events;
 
-import com.marmulasse.bank.account.Balance;
+import com.marmulasse.bank.account.aggregate.Balance;
 
 public class NewAccountCreated implements AccountEvent {
 

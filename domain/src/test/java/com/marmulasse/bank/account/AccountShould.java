@@ -1,5 +1,8 @@
 package com.marmulasse.bank.account;
 
+import com.marmulasse.bank.account.aggregate.Account;
+import com.marmulasse.bank.account.aggregate.Amount;
+import com.marmulasse.bank.account.aggregate.Balance;
 import com.marmulasse.bank.account.events.NewAccountCreated;
 import com.marmulasse.bank.account.events.NewDepositMade;
 import org.junit.Test;
@@ -23,7 +26,7 @@ public class AccountShould {
 
         account.deposit(Amount.of(10.0));
 
-        assertThat(account.balance).isEqualTo(Balance.of(10.0));
+        assertThat(account.getBalance()).isEqualTo(Balance.of(10.0));
     }
 
     @Test
@@ -33,7 +36,7 @@ public class AccountShould {
         account.deposit(Amount.of(10.0));
         account.deposit(Amount.of(5.0));
 
-        assertThat(account.balance).isEqualTo(Balance.of(15.0));
+        assertThat(account.getBalance()).isEqualTo(Balance.of(15.0));
     }
 
     @Test
