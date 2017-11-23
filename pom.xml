@@ -12,6 +12,18 @@
         <module>infra</module>
         <module>domain</module>
     </modules>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Should.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
