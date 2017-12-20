@@ -7,18 +7,27 @@ import com.marmulasse.bank.account.events.NewDepositMade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Account {
     protected Balance balance;
-    protected List<AccountEvent> newChanges = new ArrayList<>();
     protected AccountId accountId;
+    protected List<AccountEvent> newChanges = new ArrayList<>();
 
     public static Account empty() {
         return new Account(AccountId.create());
     }
 
-    public static Account with(AccountId accountId) {
-        return new Account(accountId);
+    public static Optional<Account> rebuildFrom(List<AccountEvent> events) {
+        if(events.isEmpty()) {
+            return Optional.empty();
+        }
+        Account account = new Account();
+        events.forEach(accountEvent -> accountEvent.apply(account));
+        return Optional.of(account);
+    }
+
+    private Account() {
     }
 
     private Account(AccountId accountId) {
@@ -34,11 +43,11 @@ public class Account {
         saveChange(newDepositMade);
     }
 
-    private void apply(NewDepositMade newDepositMade) {
+    public void apply(NewDepositMade newDepositMade) {
         this.balance = this.balance.add(newDepositMade.getAmount());
     }
 
-    private void apply(NewAccountCreated newAccountCreated) {
+    public void apply(NewAccountCreated newAccountCreated) {
         this.accountId = newAccountCreated.getAccountId();
         this.balance = Balance.ZERO;
     }

@@ -14,6 +14,13 @@ public class AccountId {
         return new AccountId(UUID.randomUUID());
     }
 
+    public static AccountId from(String id){
+        return new AccountId(UUID.fromString(id));
+    }
+
+    public AccountId() {
+    }
+
     private AccountId(UUID uuid) {
         this.value = uuid;
     }

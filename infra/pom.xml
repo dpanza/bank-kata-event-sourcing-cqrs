@@ -34,7 +34,24 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.marmulasse.kata</groupId>
+            <artifactId>domain</artifactId>
+            <version>${parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

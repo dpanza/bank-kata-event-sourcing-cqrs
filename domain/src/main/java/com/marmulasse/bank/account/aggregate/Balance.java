@@ -5,6 +5,9 @@ public class Balance {
 
     public static Balance ZERO = Balance.of(0.0);
 
+    public Balance() {
+    }
+
     public static Balance of(Double value) {
         return new Balance(value);
     }
