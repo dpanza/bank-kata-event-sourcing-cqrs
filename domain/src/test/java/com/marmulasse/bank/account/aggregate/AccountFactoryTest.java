@@ -15,7 +15,7 @@ public class AccountFactoryTest {
         return create(events);
     }
 
-    public static Account accountWithBalance(Balance balance) {
+    public static Account accountWithBalance(Amount balance) {
         AccountId accountId = AccountId.create();
         List<AccountEvent> events = Arrays.asList(
                 new NewAccountCreated(accountId),

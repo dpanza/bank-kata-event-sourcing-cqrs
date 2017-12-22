@@ -13,11 +13,10 @@ public class AmountShould {
         assertThat(amount.getValue()).isEqualTo(0);
     }
 
-
     @Test
     public void add_two_amount() throws Exception {
         Amount amount1 = Amount.of(1.0);
         Amount amount2 = Amount.of(1.0);
-        assertThat(amount1.add(amount2)).isEqualTo(Amount.of(2.0));
+        assertThat(amount1.plus(amount2)).isEqualTo(Amount.of(2.0));
     }
 }

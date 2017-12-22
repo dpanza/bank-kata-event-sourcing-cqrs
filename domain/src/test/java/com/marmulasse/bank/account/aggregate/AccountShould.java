@@ -14,7 +14,7 @@ public class AccountShould {
     public void have_a_zero_balance_when_initialized() throws Exception {
         Account account = Account.empty();
 
-        assertThat(account.getBalance()).isEqualTo(Balance.ZERO);
+        assertThat(account.getBalance()).isEqualTo(Amount.ZERO);
     }
 
     @Test
@@ -23,17 +23,16 @@ public class AccountShould {
 
         account.deposit(Amount.of(10.0));
 
-        assertThat(account.getBalance()).isEqualTo(Balance.of(10.0));
+        assertThat(account.balance).isEqualTo(Amount.of(10.0));
     }
 
     @Test
     public void add_amount_to_non_zero_balance_when_deposit_is_made() throws Exception {
-        Account account = Account.empty();
+        Account account = AccountFactoryTest.accountWithBalance(Amount.of(10.0));
 
-        account.deposit(Amount.of(10.0));
         account.deposit(Amount.of(5.0));
 
-        assertThat(account.getBalance()).isEqualTo(Balance.of(15.0));
+        assertThat(account.balance).isEqualTo(Amount.of(15.0));
     }
 
     @Test
@@ -76,5 +75,30 @@ public class AccountShould {
 
         assertThatThrownBy(() -> account.deposit(Amount.of(0.0)))
                 .hasMessage("A deposit must be positive");
+    }
+
+    @Test
+    public void minus_amount_from_empty_account_when_withdraw_is_made() throws Exception {
+        Account account = Account.empty();
+
+        account.withdraw(Amount.of(10.0));
+
+        assertThat(account.balance).isEqualTo(Amount.of(-10.0));
+    }
+
+    @Test
+    public void fail_when_withdraw_a_negative_amount() throws Exception {
+        Account account = Account.empty();
+
+        assertThatThrownBy(() -> account.withdraw(Amount.of(-10.0)))
+                .hasMessage("A withdraw must be positive");
+    }
+
+    @Test
+    public void fail_when_withdraw_a_zero_amount() throws Exception {
+        Account account = Account.empty();
+
+        assertThatThrownBy(() -> account.withdraw(Amount.of(0)))
+                .hasMessage("A withdraw must be positive");
     }
 }

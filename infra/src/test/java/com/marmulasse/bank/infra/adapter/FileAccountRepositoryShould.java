@@ -44,7 +44,7 @@ public class FileAccountRepositoryShould {
         sut.save(account);
 
         assertThat(new File(TARGET_ACCOUNT_EVENTS_TXT))
-                .hasContent(new EventDescriptor("5343478c-812a-49c5-acbc-d75ce70acdff", "NewDepositMade", 1513778931434L, "{\"accountId\":{\"value\":\"5343478c-812a-49c5-acbc-d75ce70acdff\"},\"amount\":{\"value\":10.0},\"name\":\"NewDepositMade\"}").toString());
+                .hasContent(new EventDescriptor("5343478c-812a-49c5-acbc-d75ce70acdff", "NewDepositMade", 1513778931434L, "{\"accountId\":{\"value\":\"5343478c-812a-49c5-acbc-d75ce70acdff\"},\"amount\":{\"value\":10.0}}").toString());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class FileAccountRepositoryShould {
     @Test
     public void throw_an_exception_when_event_cannot_be_deserialize_on_get() throws Exception {
         Files.write(Paths.get(TARGET_ACCOUNT_EVENTS_TXT),
-                ("568ec631-8275-49b1-89cd-c9bbb4e5376b;1513778931434;NewAccountCreated;{\"coucou\":{},\"balance\":{\"value\":0.0}}\n").getBytes());
+                ("568ec631-8275-49b1-89cd-c9bbb4e5376b;1513778931434;NewAccountCreated;{\"\":{\"value\":\"5343478c-812a-49c5-acbc-d75ce70acdff\"}}\n").getBytes());
 
         assertThatThrownBy(() -> sut.get(AccountId.from("568ec631-8275-49b1-89cd-c9bbb4e5376b")))
                 .hasMessage("Some event deserialization failed")

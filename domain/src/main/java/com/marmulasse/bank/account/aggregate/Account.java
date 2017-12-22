@@ -4,13 +4,14 @@ import com.google.common.base.Preconditions;
 import com.marmulasse.bank.account.events.AccountEvent;
 import com.marmulasse.bank.account.events.NewAccountCreated;
 import com.marmulasse.bank.account.events.NewDepositMade;
+import com.marmulasse.bank.account.events.NewWithdrawMade;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Account {
-    protected Balance balance;
+    protected Amount balance;
     protected AccountId accountId;
     protected List<AccountEvent> newChanges = new ArrayList<>();
 
@@ -43,13 +44,25 @@ public class Account {
         saveChange(newDepositMade);
     }
 
+    public void withdraw(Amount amount) {
+        Preconditions.checkArgument(amount.isPositive(), "A withdraw must be positive");
+
+        NewWithdrawMade newWithdrawMade = new NewWithdrawMade(accountId, amount);
+        apply(newWithdrawMade);
+        saveChange(newWithdrawMade);
+    }
+
     public void apply(NewDepositMade newDepositMade) {
-        this.balance = this.balance.add(newDepositMade.getAmount());
+        this.balance = this.balance.plus(newDepositMade.getAmount());
     }
 
     public void apply(NewAccountCreated newAccountCreated) {
         this.accountId = newAccountCreated.getAccountId();
-        this.balance = Balance.ZERO;
+        this.balance = Amount.ZERO;
+    }
+
+    public void apply(NewWithdrawMade newWithdrawMade) {
+        this.balance = this.balance.minus(newWithdrawMade.getAmount());
     }
 
     private void saveChange(AccountEvent accountEvent) {
@@ -64,7 +77,7 @@ public class Account {
         return newChanges;
     }
 
-    public Balance getBalance() {
+    public Amount getBalance() {
         return balance;
     }
 

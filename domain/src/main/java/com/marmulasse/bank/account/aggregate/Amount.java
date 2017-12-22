@@ -1,10 +1,15 @@
 package com.marmulasse.bank.account.aggregate;
 
 public class Amount {
+    public static Amount ZERO = Amount.of(0);
     private final double value;
 
     public static Amount of(double value) {
         return new Amount(value);
+    }
+
+    public Amount() {
+        value = 0;
     }
 
     private Amount(double value) {
@@ -39,8 +44,12 @@ public class Amount {
                 '}';
     }
 
-    public Amount add(Amount amount) {
+    public Amount plus(Amount amount) {
         return new Amount(this.value + amount.value);
+    }
+
+    public Amount minus(Amount amount) {
+        return new Amount(this.value - amount.value);
     }
 
     public boolean isPositive() {
