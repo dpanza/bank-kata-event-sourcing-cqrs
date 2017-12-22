@@ -1,6 +1,6 @@
 package com.marmulasse.bank.account;
 
-class Balance {
+public class Balance {
     private double value;
 
     public static Balance ZERO = Balance.of(0.0);

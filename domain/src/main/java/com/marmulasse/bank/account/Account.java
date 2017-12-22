@@ -1,22 +1,48 @@
 package com.marmulasse.bank.account;
 
+import com.google.common.base.Preconditions;
+import com.marmulasse.bank.account.events.AccountEvent;
+import com.marmulasse.bank.account.events.NewAccountCreated;
+import com.marmulasse.bank.account.events.NewDepositMade;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Account {
-    private Balance balance;
+    protected Balance balance;
+    protected List<AccountEvent> newChanges = new ArrayList<>();
 
     public static Account empty() {
         return new Account(Balance.ZERO);
     }
 
-    public static Account with(Balance balance) {
-        return new Account(balance);
-    }
-
     private Account(Balance balance) {
-        this.balance = balance;
+        NewAccountCreated newAccountCreated = new NewAccountCreated(balance);
+        apply(newAccountCreated);
+        saveChange(newAccountCreated);
     }
 
     public void deposit(Amount amount) {
-        this.balance = this.balance.add(amount);
+        Preconditions.checkArgument(amount.isPositive(), "A deposit must be positive");
+        NewDepositMade newDepositMade = new NewDepositMade(amount);
+        apply(newDepositMade);
+        saveChange(newDepositMade);
+    }
+
+    private void apply(NewDepositMade newDepositMade) {
+        this.balance = this.balance.add(newDepositMade.getAmount());
+    }
+
+    private void apply(NewAccountCreated newAccountCreated) {
+        this.balance = newAccountCreated.getBalance();
+    }
+
+    private void saveChange(AccountEvent accountEvent) {
+        this.newChanges.add(accountEvent);
+    }
+
+    public List<AccountEvent> getNewChanges() {
+        return newChanges;
     }
 
     public Balance getBalance() {
@@ -45,4 +71,5 @@ public class Account {
                 "balance=" + balance +
                 '}';
     }
+
 }

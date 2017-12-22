@@ -1,9 +1,9 @@
 package com.marmulasse.bank.account;
 
-class Amount {
+public class Amount {
     private final double value;
 
-    public static Amount of(Double value) {
+    public static Amount of(double value) {
         return new Amount(value);
     }
 
@@ -41,5 +41,9 @@ class Amount {
 
     public Amount add(Amount amount) {
         return new Amount(this.value + amount.value);
+    }
+
+    public boolean isPositive() {
+        return value > 0;
     }
 }

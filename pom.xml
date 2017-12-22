@@ -12,6 +12,7 @@
         <module>infra</module>
         <module>domain</module>
     </modules>
+
     <build>
         <plugins>
             <plugin>
@@ -25,5 +26,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
