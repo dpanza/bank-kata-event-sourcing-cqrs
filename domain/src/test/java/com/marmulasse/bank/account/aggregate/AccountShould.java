@@ -1,7 +1,5 @@
 package com.marmulasse.bank.account.aggregate;
 
-import com.marmulasse.bank.account.events.NewAccountCreated;
-import com.marmulasse.bank.account.events.NewDepositMade;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +37,8 @@ public class AccountShould {
     public void add_new_account_creation_event_when_account_is_created() throws Exception {
         Account account = Account.empty();
 
-        assertThat(account.getNewChanges()).containsExactly(new NewAccountCreated(account.getAccountId()));
+        assertThat(account).isNotNull();
+        assertThat(account.getAccountId()).isNotNull();
     }
 
     @Test
@@ -48,10 +47,7 @@ public class AccountShould {
 
         account.deposit(Amount.of(1.0));
 
-        assertThat(account.getNewChanges())
-                .containsExactly(
-                        new NewAccountCreated(account.getAccountId()),
-                        new NewDepositMade(account.getAccountId(), Amount.of(1.0)));
+        assertThat(account.getBalance()).isEqualTo(Amount.of(1.0));
     }
 
     @Test
