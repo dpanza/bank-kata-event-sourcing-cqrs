@@ -10,7 +10,8 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>infra</module>
-        <module>domain</module>
+        <module>command</module>
+        <module>query</module>
     </modules>
 
     <build>

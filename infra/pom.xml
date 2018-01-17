@@ -26,7 +26,12 @@
     <dependencies>
         <dependency>
             <groupId>com.marmulasse.kata</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>command</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.marmulasse.kata</groupId>
+            <artifactId>query</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
@@ -47,7 +52,7 @@
 
         <dependency>
             <groupId>com.marmulasse.kata</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>command</artifactId>
             <version>${parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>

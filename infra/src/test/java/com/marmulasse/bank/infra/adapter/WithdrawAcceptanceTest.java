@@ -2,9 +2,10 @@ package com.marmulasse.bank.infra.adapter;
 
 import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.Amount;
-import com.marmulasse.bank.account.commands.MakeDepositCommand;
+import com.marmulasse.bank.account.commands.MakeWithdrawCommand;
 import com.marmulasse.bank.account.commands.handlers.CommandHandler;
 import com.marmulasse.bank.account.commands.handlers.DepositCommandHandler;
+import com.marmulasse.bank.account.commands.handlers.WithdrawCommandHandler;
 import com.marmulasse.bank.account.port.AccountRepository;
 import com.marmulasse.bank.infra.bus.CommandBus;
 import com.marmulasse.bank.infra.bus.DomainBus;
@@ -19,12 +20,14 @@ import com.marmulasse.bank.query.account.queries.handlers.GetBalanceByIdQueryHan
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DepositAcceptanceTest {
+public class WithdrawAcceptanceTest {
 
     private CommandBus commandBus;
     private AccountRepository accountRepository;
@@ -38,28 +41,31 @@ public class DepositAcceptanceTest {
 
         DomainBus domainBus = new DomainBus(accountEventHandler);
         accountRepository = new InMemoryAccountRepository(new HashMap<>(), domainBus);
-        CommandHandler<MakeDepositCommand> depositCommandHandler = new DepositCommandHandler(accountRepository);
 
-        QueryHandler<GetBalanceFromAccountId, Balance> getBalanceFromAccountIdQueryHandler = new GetBalanceByIdQueryHandler(balanceRepository);
+        QueryHandler<GetBalanceFromAccountId, Balance> getBalanceFromAccountIdAccountQueryHandler = new GetBalanceByIdQueryHandler(balanceRepository);
 
-        commandBus = new CommandBus(Collections.singletonList(depositCommandHandler));
-        queryBus = new QueryBus(Collections.singletonList(getBalanceFromAccountIdQueryHandler));
+        List<CommandHandler> handlers = Arrays.asList(new DepositCommandHandler(accountRepository), new WithdrawCommandHandler(accountRepository));
+        commandBus = new CommandBus(handlers);
+        queryBus = new QueryBus(Collections.singletonList(getBalanceFromAccountIdAccountQueryHandler));
     }
 
 
     @Test
-    public void should_make_a_deposit() throws Exception {
+    public void should_make_a_withdraw() throws Exception {
         Account emptyAccount = Account.empty();
+        emptyAccount.deposit(Amount.of(10.0));
         accountRepository.save(emptyAccount);
 
-        MakeDepositCommand command = new MakeDepositCommand(emptyAccount.getAccountId(), Amount.of(1.0));
+        MakeWithdrawCommand command = new MakeWithdrawCommand(emptyAccount.getAccountId(), Amount.of(1.0));
         commandBus.dispatch(command);
 
-        Result<Balance> result = queryBus.ask(new GetBalanceFromAccountId(emptyAccount.getAccountId().getValue().toString()));
+        String id = emptyAccount.getAccountId().getValue().toString();
+        Result<Balance> result = queryBus.ask(new GetBalanceFromAccountId(id));
         assertThat(result.getValue()).isEqualTo(
                 Balance.create(
                         AccountId.from(emptyAccount.getAccountId().getValue().toString()),
-                        com.marmulasse.bank.query.account.balance.Amount.of(1.0)
+                        com.marmulasse.bank.query.account.balance.Amount.of(9.0)
                 ));
     }
+
 }

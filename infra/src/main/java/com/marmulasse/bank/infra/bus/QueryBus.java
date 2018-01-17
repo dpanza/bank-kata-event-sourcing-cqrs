@@ -1,8 +1,8 @@
 package com.marmulasse.bank.infra.bus;
 
-import com.marmulasse.bank.account.queries.Query;
-import com.marmulasse.bank.account.queries.handlers.QueryHandler;
-import com.marmulasse.bank.account.queries.Result;
+import com.marmulasse.bank.query.account.port.QueryHandler;
+import com.marmulasse.bank.query.account.queries.Query;
+import com.marmulasse.bank.query.account.queries.Result;
 
 import java.util.List;
 import java.util.Map;
