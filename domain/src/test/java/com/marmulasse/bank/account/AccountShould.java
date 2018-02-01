@@ -1,8 +1,12 @@
 package com.marmulasse.bank.account;
 
+import com.marmulasse.bank.account.events.AccountEvent;
 import com.marmulasse.bank.account.events.NewAccountCreated;
 import com.marmulasse.bank.account.events.NewDepositMade;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -71,5 +75,19 @@ public class AccountShould {
         account.deposit(Amount.of(10.0));
 
         assertThat(account.getUncommittedChanges()).contains(new NewDepositMade(account.getAccountId(), Amount.of(10.0)));
+    }
+
+    @Test
+    public void be_initialized_with_past_events() throws Exception {
+        AccountId accountId = AccountId.create();
+        List<AccountEvent> events = Arrays.asList(
+                new NewAccountCreated(accountId, Balance.of(10.0)),
+                new NewDepositMade(accountId, Amount.of(10.0))
+        );
+
+        Account account = Account.rebuild(events);
+
+        assertThat(account.getBalance()).isEqualTo(Balance.of(20.0));
+        assertThat(account.getAccountId()).isEqualTo(accountId);
     }
 }

@@ -22,6 +22,10 @@ public class Account {
         return new Account(AccountId.create(), balance);
     }
 
+    public static Account rebuild(List<AccountEvent> events) {
+        return null;
+    }
+
     private Account(AccountId accountId, Balance balance) {
         NewAccountCreated newAccountCreated = new NewAccountCreated(accountId, balance);
         apply(newAccountCreated);
