@@ -2,13 +2,16 @@ package com.marmulasse.bank.account;
 
 import com.google.common.base.Preconditions;
 import com.marmulasse.bank.account.events.AccountEvent;
+import com.marmulasse.bank.account.events.NewAccountCreated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Account {
     private AccountId accountId;
     private Balance balance;
+    protected List<AccountEvent> uncommittedChanges = new ArrayList<>();
 
     public static Account empty() {
         return new Account(AccountId.create(), Balance.ZERO);
@@ -19,13 +22,23 @@ public class Account {
     }
 
     private Account(AccountId accountId, Balance balance) {
-        this.accountId = accountId;
-        this.balance = balance;
+        NewAccountCreated newAccountCreated = new NewAccountCreated(accountId, balance);
+        apply(newAccountCreated);
+        saveUncommittedChange(newAccountCreated);
     }
 
     public void deposit(Amount amount) {
         Preconditions.checkArgument(amount.isPositive(), "A deposit must be positive");
         this.balance = this.balance.add(amount);
+    }
+
+    private void apply(NewAccountCreated newAccountCreated) {
+        this.accountId = newAccountCreated.getAccountId();
+        this.balance = newAccountCreated.getBalance();
+    }
+
+    private void saveUncommittedChange(AccountEvent accountEvent) {
+        this.uncommittedChanges.add(accountEvent);
     }
 
     public Balance getBalance() {
@@ -59,6 +72,6 @@ public class Account {
     }
 
     public List<AccountEvent> getUncommittedChanges() {
-        return null;
+        return uncommittedChanges;
     }
 }

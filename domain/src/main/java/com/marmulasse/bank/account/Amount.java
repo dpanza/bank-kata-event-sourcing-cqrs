@@ -1,9 +1,9 @@
 package com.marmulasse.bank.account;
 
-class Amount {
+public class Amount {
     private final double value;
 
-    public static Amount of(Double value) {
+    public static Amount of(double value) {
         return new Amount(value);
     }
 
