@@ -1,5 +1,6 @@
 package com.marmulasse.bank.account;
 
+import com.marmulasse.bank.account.events.NewAccountCreated;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +21,12 @@ public class AccountShould {
         assertThat(account.getBalance()).isEqualTo(Balance.of(1.0));
     }
 
+
+    @Test
+    public void add_creation_event_when_creating_account() throws Exception {
+        Account account = Account.empty();
+        assertThat(account.getUncommittedChanges()).containsOnly(new NewAccountCreated(account.getAccountId(), Balance.ZERO));
+    }
 
     @Test
     public void add_amount_to_empty_account_when_deposit_is_made() throws Exception {

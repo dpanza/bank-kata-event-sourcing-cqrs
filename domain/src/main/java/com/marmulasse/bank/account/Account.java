@@ -1,7 +1,9 @@
 package com.marmulasse.bank.account;
 
 import com.google.common.base.Preconditions;
+import com.marmulasse.bank.account.events.AccountEvent;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Account {
@@ -30,6 +32,10 @@ public class Account {
         return balance;
     }
 
+    public AccountId getAccountId() {
+        return accountId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,5 +56,9 @@ public class Account {
                 "accountId=" + accountId +
                 ", balance=" + balance +
                 '}';
+    }
+
+    public List<AccountEvent> getUncommittedChanges() {
+        return null;
     }
 }
