@@ -1,6 +1,7 @@
 package com.marmulasse.bank.account;
 
 import com.marmulasse.bank.account.events.NewAccountCreated;
+import com.marmulasse.bank.account.events.NewDepositMade;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,4 +63,13 @@ public class AccountShould {
                 .hasMessage("A deposit must be positive");
     }
 
+
+    @Test
+    public void add_deposit_event_to_uncommitted_change_when_deposit_made() throws Exception {
+        Account account = Account.empty();
+
+        account.deposit(Amount.of(10.0));
+
+        assertThat(account.getUncommittedChanges()).contains(new NewDepositMade(account.getAccountId(), Amount.of(10.0)));
+    }
 }
