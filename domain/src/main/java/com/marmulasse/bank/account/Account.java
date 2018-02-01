@@ -3,6 +3,7 @@ package com.marmulasse.bank.account;
 import com.google.common.base.Preconditions;
 import com.marmulasse.bank.account.events.AccountEvent;
 import com.marmulasse.bank.account.events.NewAccountCreated;
+import com.marmulasse.bank.account.events.NewDepositMade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,13 @@ public class Account {
 
     public void deposit(Amount amount) {
         Preconditions.checkArgument(amount.isPositive(), "A deposit must be positive");
-        this.balance = this.balance.add(amount);
+        NewDepositMade newDepositMade = new NewDepositMade(this.accountId, amount);
+        apply(newDepositMade);
+        saveUncommittedChange(newDepositMade);
+    }
+
+    private void apply(NewDepositMade newDepositMade) {
+        this.balance = this.balance.add(newDepositMade.getAmount());
     }
 
     private void apply(NewAccountCreated newAccountCreated) {
