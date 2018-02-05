@@ -1,5 +1,6 @@
 package com.marmulasse.bank.account;
 
+import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.port.AccountRepository;
 
 public class CreateAccountHandler {
@@ -10,5 +11,6 @@ public class CreateAccountHandler {
     }
 
     public void createAccount() {
+        accountRepository.save(Account.empty());
     }
 }
