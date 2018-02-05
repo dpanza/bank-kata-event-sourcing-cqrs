@@ -1,5 +1,6 @@
 package com.marmulasse.bank.account;
 
+import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.AccountId;
 import com.marmulasse.bank.account.aggregate.Amount;
 import com.marmulasse.bank.account.exception.AccountNotFound;
@@ -13,5 +14,8 @@ public class WithdrawHandler {
     }
 
     public void makeWithdraw(AccountId accountId, Amount amount) throws AccountNotFound {
+        Account account = accountRepository.get(accountId).orElseThrow(() -> new AccountNotFound(accountId));
+        account.withdraw(amount);
+        accountRepository.save(account);
     }
 }

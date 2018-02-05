@@ -46,7 +46,10 @@ public class Account {
     }
 
     public void withdraw(Amount amount) {
-
+        Preconditions.checkArgument(amount.isPositive(), "A withdraw must be positive");
+        NewWithdrawMade newWithdrawMade = new NewWithdrawMade(this.accountId, amount);
+        apply(newWithdrawMade);
+        saveUncommittedChange(newWithdrawMade);
     }
 
     public Account apply(NewDepositMade newDepositMade) {
@@ -61,7 +64,8 @@ public class Account {
     }
 
     public Account apply(NewWithdrawMade newWithdrawMade) {
-        return null;
+        this.balance = this.balance.minus(newWithdrawMade.getAmount());
+        return this;
     }
 
     private void saveUncommittedChange(AccountEvent accountEvent) {

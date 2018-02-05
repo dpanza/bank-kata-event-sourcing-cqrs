@@ -18,6 +18,11 @@ public class Balance {
         return new Balance(amount.getValue());
     }
 
+    public Balance minus(Amount amountToAdd) {
+        Amount amount = Amount.of(this.value).minus(amountToAdd);
+        return new Balance(amount.getValue());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

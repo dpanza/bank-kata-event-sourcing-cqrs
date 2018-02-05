@@ -43,6 +43,10 @@ public class Amount {
         return new Amount(this.value + amount.value);
     }
 
+    public Amount minus(Amount amount) {
+        return new Amount(this.value - amount.value);
+    }
+
     public boolean isPositive() {
         return value > 0;
     }
