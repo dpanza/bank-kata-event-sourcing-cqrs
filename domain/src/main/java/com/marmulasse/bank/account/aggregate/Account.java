@@ -1,9 +1,9 @@
-package com.marmulasse.bank.account;
+package com.marmulasse.bank.account.aggregate;
 
 import com.google.common.base.Preconditions;
-import com.marmulasse.bank.account.events.AccountEvent;
-import com.marmulasse.bank.account.events.NewAccountCreated;
-import com.marmulasse.bank.account.events.NewDepositMade;
+import com.marmulasse.bank.account.aggregate.events.AccountEvent;
+import com.marmulasse.bank.account.aggregate.events.NewAccountCreated;
+import com.marmulasse.bank.account.aggregate.events.NewDepositMade;
 
 import java.util.ArrayList;
 import java.util.List;

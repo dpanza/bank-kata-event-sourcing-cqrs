@@ -1,8 +1,8 @@
-package com.marmulasse.bank.account.events;
+package com.marmulasse.bank.account.aggregate.events;
 
-import com.marmulasse.bank.account.Account;
-import com.marmulasse.bank.account.AccountId;
-import com.marmulasse.bank.account.Balance;
+import com.marmulasse.bank.account.aggregate.Account;
+import com.marmulasse.bank.account.aggregate.AccountId;
+import com.marmulasse.bank.account.aggregate.Balance;
 
 import java.util.Objects;
 

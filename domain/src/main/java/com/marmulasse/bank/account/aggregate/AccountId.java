@@ -1,4 +1,4 @@
-package com.marmulasse.bank.account;
+package com.marmulasse.bank.account.aggregate;
 
 import java.util.UUID;
 

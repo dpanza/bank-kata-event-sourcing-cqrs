@@ -1,8 +1,12 @@
-package com.marmulasse.bank.account;
+package com.marmulasse.bank.account.aggregate;
 
-import com.marmulasse.bank.account.events.AccountEvent;
-import com.marmulasse.bank.account.events.NewAccountCreated;
-import com.marmulasse.bank.account.events.NewDepositMade;
+import com.marmulasse.bank.account.aggregate.Account;
+import com.marmulasse.bank.account.aggregate.AccountId;
+import com.marmulasse.bank.account.aggregate.Amount;
+import com.marmulasse.bank.account.aggregate.Balance;
+import com.marmulasse.bank.account.aggregate.events.AccountEvent;
+import com.marmulasse.bank.account.aggregate.events.NewAccountCreated;
+import com.marmulasse.bank.account.aggregate.events.NewDepositMade;
 import org.junit.Test;
 
 import java.util.Arrays;
