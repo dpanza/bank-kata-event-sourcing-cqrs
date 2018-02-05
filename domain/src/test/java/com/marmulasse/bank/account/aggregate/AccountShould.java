@@ -1,12 +1,9 @@
 package com.marmulasse.bank.account.aggregate;
 
-import com.marmulasse.bank.account.aggregate.Account;
-import com.marmulasse.bank.account.aggregate.AccountId;
-import com.marmulasse.bank.account.aggregate.Amount;
-import com.marmulasse.bank.account.aggregate.Balance;
 import com.marmulasse.bank.account.aggregate.events.AccountEvent;
 import com.marmulasse.bank.account.aggregate.events.NewAccountCreated;
 import com.marmulasse.bank.account.aggregate.events.NewDepositMade;
+import com.marmulasse.bank.account.aggregate.events.NewWithdrawMade;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -93,5 +90,39 @@ public class AccountShould {
 
         assertThat(account.getBalance()).isEqualTo(Balance.of(20.0));
         assertThat(account.getAccountId()).isEqualTo(accountId);
+    }
+
+    @Test
+    public void reduce_balance_when_withdraw_amount_from_account() throws Exception {
+        Account account = Account.with(Balance.of(15.0));
+
+        account.withdraw(Amount.of(10.0));
+
+        assertThat(account.getBalance()).isEqualTo(Balance.of(5.0));
+    }
+
+    @Test
+    public void add_withdraw_event_to_uncommitted_change_when_withdraw_made() throws Exception {
+        Account account = Account.empty();
+
+        account.withdraw(Amount.of(10.0));
+
+        assertThat(account.getUncommittedChanges()).contains(new NewWithdrawMade(account.getAccountId(), Amount.of(10.0)));
+    }
+
+    @Test
+    public void fail_when_withdraw_a_negative_amount() throws Exception {
+        Account account = Account.empty();
+
+        assertThatThrownBy(() -> account.withdraw(Amount.of(-1.0)))
+                .hasMessage("A withdraw must be positive");
+    }
+
+    @Test
+    public void fail_when_withdraw_a_zero_amount() throws Exception {
+        Account account = Account.empty();
+
+        assertThatThrownBy(() -> account.withdraw(Amount.of(0.0)))
+                .hasMessage("A withdraw must be positive");
     }
 }

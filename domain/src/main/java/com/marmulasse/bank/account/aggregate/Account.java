@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.marmulasse.bank.account.aggregate.events.AccountEvent;
 import com.marmulasse.bank.account.aggregate.events.NewAccountCreated;
 import com.marmulasse.bank.account.aggregate.events.NewDepositMade;
+import com.marmulasse.bank.account.aggregate.events.NewWithdrawMade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,10 @@ public class Account {
         saveUncommittedChange(newDepositMade);
     }
 
+    public void withdraw(Amount amount) {
+
+    }
+
     public Account apply(NewDepositMade newDepositMade) {
         this.balance = this.balance.add(newDepositMade.getAmount());
         return this;
@@ -53,6 +58,10 @@ public class Account {
         this.accountId = newAccountCreated.getAccountId();
         this.balance = newAccountCreated.getBalance();
         return this;
+    }
+
+    public Account apply(NewWithdrawMade newWithdrawMade) {
+        return null;
     }
 
     private void saveUncommittedChange(AccountEvent accountEvent) {
