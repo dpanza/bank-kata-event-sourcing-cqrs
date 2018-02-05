@@ -1,10 +1,10 @@
 package com.marmulasse.bank.account.aggregate.events;
 
-import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.AccountId;
+import com.marmulasse.bank.account.aggregate.AccountProjection;
 import com.marmulasse.bank.account.aggregate.Amount;
 
-public class NewDepositMade implements AccountEvent {
+public class NewDepositMade implements AccountEvent<AccountProjection> {
     private AccountId accountId;
     private Amount amount;
 
@@ -49,7 +49,7 @@ public class NewDepositMade implements AccountEvent {
     }
 
     @Override
-    public Account apply(Account account) {
-        return account.apply(this);
+    public AccountProjection apply(AccountProjection projection) {
+        return projection.stateApplier().apply(this);
     }
 }

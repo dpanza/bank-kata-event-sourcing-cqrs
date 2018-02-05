@@ -1,12 +1,12 @@
 package com.marmulasse.bank.account.aggregate.events;
 
-import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.AccountId;
+import com.marmulasse.bank.account.aggregate.AccountProjection;
 import com.marmulasse.bank.account.aggregate.Amount;
 
 import java.util.Objects;
 
-public class NewWithdrawMade implements AccountEvent {
+public class NewWithdrawMade implements AccountEvent<AccountProjection> {
     private AccountId accountId;
     private Amount amount;
 
@@ -46,7 +46,7 @@ public class NewWithdrawMade implements AccountEvent {
     }
 
     @Override
-    public Account apply(Account account) {
-        return account.apply(this);
+    public AccountProjection apply(AccountProjection projection) {
+        return projection.stateApplier().apply(this);
     }
 }

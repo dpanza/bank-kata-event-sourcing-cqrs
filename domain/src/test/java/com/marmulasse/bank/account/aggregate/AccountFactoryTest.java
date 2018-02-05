@@ -9,19 +9,19 @@ import java.util.List;
 public class AccountFactoryTest {
 
     public static Account existingAccount(AccountId accountId) {
-        List<AccountEvent> events = Collections.singletonList(new NewAccountCreated(accountId, Balance.ZERO));
+        List<AccountEvent<AccountProjection>> events = Collections.singletonList(new NewAccountCreated(accountId, Balance.ZERO));
         return create(events);
     }
 
     public static Account accountWithBalance(Balance balance) {
         AccountId accountId = AccountId.create();
-        List<AccountEvent> events = Collections.singletonList(
+        List<AccountEvent<AccountProjection>> events = Collections.singletonList(
                 new NewAccountCreated(accountId, balance)
         );
         return create(events);
     }
 
-    private static Account create(List<AccountEvent> events) {
-        return Account.rebuild(events);
+    private static Account create(List<AccountEvent<AccountProjection>> events) {
+        return new Account(events);
     }
 }

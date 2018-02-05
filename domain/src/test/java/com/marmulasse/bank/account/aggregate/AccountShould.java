@@ -18,20 +18,20 @@ public class AccountShould {
     @Test
     public void have_a_zero_balance_when_account_created_as_empty() throws Exception {
         Account account = Account.empty();
-        assertThat(account.getBalance()).isEqualTo(Balance.ZERO);
+        assertThat(account.getProjection().getBalance()).isEqualTo(Balance.ZERO);
     }
 
     @Test
     public void have_the_balance_specified_as_input_of_account_creation() throws Exception {
         Account account = Account.with(Balance.of(1.0));
-        assertThat(account.getBalance()).isEqualTo(Balance.of(1.0));
+        assertThat(account.getProjection().getBalance()).isEqualTo(Balance.of(1.0));
     }
 
 
     @Test
     public void add_creation_event_when_creating_account() throws Exception {
         Account account = Account.empty();
-        assertThat(account.getUncommittedChanges()).containsOnly(new NewAccountCreated(account.getAccountId(), Balance.ZERO));
+        assertThat(account.getUncommittedChanges()).containsOnly(new NewAccountCreated(account.getProjection().getAccountId(), Balance.ZERO));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class AccountShould {
 
         account.deposit(Amount.of(10.0));
 
-        assertThat(account.getBalance()).isEqualTo(Balance.of(10.0));
+        assertThat(account.getProjection().getBalance()).isEqualTo(Balance.of(10.0));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class AccountShould {
 
         account.deposit(Amount.of(5.0));
 
-        assertThat(account.getBalance()).isEqualTo(Balance.of(15.0));
+        assertThat(account.getProjection().getBalance()).isEqualTo(Balance.of(15.0));
     }
 
     @Test
@@ -75,21 +75,21 @@ public class AccountShould {
 
         account.deposit(Amount.of(10.0));
 
-        assertThat(account.getUncommittedChanges()).contains(new NewDepositMade(account.getAccountId(), Amount.of(10.0)));
+        assertThat(account.getUncommittedChanges()).contains(new NewDepositMade(account.getProjection().getAccountId(), Amount.of(10.0)));
     }
 
     @Test
     public void be_initialized_with_past_events() throws Exception {
         AccountId accountId = AccountId.create();
-        List<AccountEvent> events = Arrays.asList(
+        List<AccountEvent<AccountProjection>> events = Arrays.asList(
                 new NewAccountCreated(accountId, Balance.of(10.0)),
                 new NewDepositMade(accountId, Amount.of(10.0))
         );
 
-        Account account = Account.rebuild(events);
+        Account account = new Account(events);
 
-        assertThat(account.getBalance()).isEqualTo(Balance.of(20.0));
-        assertThat(account.getAccountId()).isEqualTo(accountId);
+        assertThat(account.getProjection().getBalance()).isEqualTo(Balance.of(20.0));
+        assertThat(account.getProjection().getAccountId()).isEqualTo(accountId);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class AccountShould {
 
         account.withdraw(Amount.of(10.0));
 
-        assertThat(account.getBalance()).isEqualTo(Balance.of(5.0));
+        assertThat(account.getProjection().getBalance()).isEqualTo(Balance.of(5.0));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class AccountShould {
 
         account.withdraw(Amount.of(10.0));
 
-        assertThat(account.getUncommittedChanges()).contains(new NewWithdrawMade(account.getAccountId(), Amount.of(10.0)));
+        assertThat(account.getUncommittedChanges()).contains(new NewWithdrawMade(account.getProjection().getAccountId(), Amount.of(10.0)));
     }
 
     @Test

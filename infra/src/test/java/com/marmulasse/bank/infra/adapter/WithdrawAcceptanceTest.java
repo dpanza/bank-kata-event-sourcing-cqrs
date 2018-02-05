@@ -23,12 +23,12 @@ public class WithdrawAcceptanceTest {
     @Test
     public void making_withdraw_should_reduce_balance_of_an_account() throws Exception {
         Account existingAccount = Account.with(Balance.of(15.0));
-        assertThat(existingAccount.getBalance()).isEqualTo(Balance.ZERO);
+        assertThat(existingAccount.getProjection().getBalance()).isEqualTo(Balance.ZERO);
         accountRepository.save(existingAccount);
 
-        withdrawHandler.makeWithdraw(existingAccount.getAccountId(), Amount.of(10.0));
+        withdrawHandler.makeWithdraw(existingAccount.getProjection().getAccountId(), Amount.of(10.0));
 
-        Account updatedAccount = accountRepository.get(existingAccount.getAccountId()).get();
-        assertThat(updatedAccount.getBalance()).isEqualTo(Balance.of(5.0));
+        Account updatedAccount = accountRepository.get(existingAccount.getProjection().getAccountId()).get();
+        assertThat(updatedAccount.getProjection().getBalance()).isEqualTo(Balance.of(5.0));
     }
 }

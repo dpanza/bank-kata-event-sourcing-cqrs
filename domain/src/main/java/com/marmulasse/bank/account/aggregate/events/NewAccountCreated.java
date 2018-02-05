@@ -1,12 +1,12 @@
 package com.marmulasse.bank.account.aggregate.events;
 
-import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.AccountId;
+import com.marmulasse.bank.account.aggregate.AccountProjection;
 import com.marmulasse.bank.account.aggregate.Balance;
 
 import java.util.Objects;
 
-public class NewAccountCreated implements AccountEvent {
+public class NewAccountCreated implements AccountEvent<AccountProjection> {
 
     private AccountId accountId;
     private Balance balance;
@@ -47,7 +47,7 @@ public class NewAccountCreated implements AccountEvent {
     }
 
     @Override
-    public Account apply(Account account) {
-        return account.apply(this);
+    public AccountProjection apply(AccountProjection projection) {
+        return projection.stateApplier().apply(this);
     }
 }

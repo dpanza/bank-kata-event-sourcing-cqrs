@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.marmulasse.bank.account.aggregate.Account;
 import com.marmulasse.bank.account.aggregate.AccountId;
+import com.marmulasse.bank.account.aggregate.AccountProjection;
 import com.marmulasse.bank.account.aggregate.events.AccountEvent;
 import com.marmulasse.bank.account.port.AccountRepository;
 
@@ -11,22 +12,22 @@ import java.util.Optional;
 
 public class InMemoryAccountRepository implements AccountRepository {
 
-    private ListMultimap<AccountId, AccountEvent> db;
+    private ListMultimap<AccountId, AccountEvent<AccountProjection>> db;
 
     public InMemoryAccountRepository() {
         this(ArrayListMultimap.create());
     }
 
-    public InMemoryAccountRepository(ListMultimap<AccountId, AccountEvent> db) {
+    public InMemoryAccountRepository(ListMultimap<AccountId, AccountEvent<AccountProjection>> db) {
         this.db = db;
     }
 
     public void save(final Account account) {
         account.getUncommittedChanged()
-                .forEach(uncommittedChanged -> db.put(account.getAccountId(), uncommittedChanged));
+                .forEach(uncommittedChanged -> db.put(account.getProjection().getAccountId(), uncommittedChanged));
     }
 
     public Optional<Account> get(AccountId accountId) {
-        return Optional.ofNullable(db.get(accountId)).map(Account::rebuild);
+        return Optional.ofNullable(db.get(accountId)).map(Account::new);
     }
 }

@@ -33,7 +33,7 @@ public class DepositHandlerShould {
     @Test
     public void store_account_after_deposit() throws Exception {
         Account existingAccount = AccountFactoryTest.existingAccount(AccountId.create());
-        AccountId accountId = existingAccount.getAccountId();
+        AccountId accountId = existingAccount.getProjection().getAccountId();
         when(accountRepository.get(accountId)).thenReturn(Optional.of(existingAccount));
 
         sut.makeDeposit(accountId, Amount.of(10.0));
