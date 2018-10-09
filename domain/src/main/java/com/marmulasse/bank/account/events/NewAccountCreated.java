@@ -1,5 +1,6 @@
 package com.marmulasse.bank.account.events;
 
+import com.marmulasse.bank.account.Account;
 import com.marmulasse.bank.account.AccountId;
 import com.marmulasse.bank.account.Balance;
 
@@ -43,5 +44,10 @@ public class NewAccountCreated implements AccountEvent {
                 "accountId=" + accountId +
                 ", balance=" + balance +
                 '}';
+    }
+
+    @Override
+    public Account apply(Account account) {
+        return account.apply(this);
     }
 }

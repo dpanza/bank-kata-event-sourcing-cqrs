@@ -1,5 +1,6 @@
 package com.marmulasse.bank.account.events;
 
+import com.marmulasse.bank.account.Account;
 import com.marmulasse.bank.account.AccountId;
 import com.marmulasse.bank.account.Amount;
 
@@ -45,5 +46,10 @@ public class NewDepositMade implements AccountEvent {
                 "accountId=" + accountId +
                 ", amount=" + amount +
                 '}';
+    }
+
+    @Override
+    public Account apply(Account account) {
+        return account.apply(this);
     }
 }

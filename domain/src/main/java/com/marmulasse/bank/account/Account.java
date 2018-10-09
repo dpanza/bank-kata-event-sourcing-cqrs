@@ -23,8 +23,13 @@ public class Account {
     }
 
     public static Account rebuild(List<AccountEvent> events) {
-        return null;
+        return events.stream()
+                .reduce(new Account(),
+                        (account, event) -> event.apply(account),
+                        (account1, account2) -> account2);
     }
+
+    private Account() {}
 
     private Account(AccountId accountId, Balance balance) {
         NewAccountCreated newAccountCreated = new NewAccountCreated(accountId, balance);
@@ -39,13 +44,15 @@ public class Account {
         saveUncommittedChange(newDepositMade);
     }
 
-    private void apply(NewDepositMade newDepositMade) {
+    public Account apply(NewDepositMade newDepositMade) {
         this.balance = this.balance.add(newDepositMade.getAmount());
+        return this;
     }
 
-    private void apply(NewAccountCreated newAccountCreated) {
+    public Account apply(NewAccountCreated newAccountCreated) {
         this.accountId = newAccountCreated.getAccountId();
         this.balance = newAccountCreated.getBalance();
+        return this;
     }
 
     private void saveUncommittedChange(AccountEvent accountEvent) {
